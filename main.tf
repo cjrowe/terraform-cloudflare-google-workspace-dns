@@ -1,3 +1,14 @@
+locals {
+  cname_mappings = {
+    GOOGLE = {
+      url = "ghs.google.com"
+    },
+    GOOGLE_HOSTED = {
+      url = "ghs.googlehosted.com"
+    }
+  }
+}
+
 resource "cloudflare_record" "mx" {
   zone_id  = var.cloudflare_zone_id
   name     = var.domain_name
@@ -40,28 +51,35 @@ resource "cloudflare_record" "mx_alt_4" {
 
 resource "cloudflare_record" "calendar_cname" {
   name    = "calendar"
-  value   = "ghs.google.com"
+  value   = lookup(local.cname_mappings[var.service_cname_redirect], "url", null)
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
 }
 
 resource "cloudflare_record" "contacts_cname" {
   name    = "contacts"
-  value   = "ghs.google.com"
+  value   = lookup(local.cname_mappings[var.service_cname_redirect], "url", null)
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
 }
 
 resource "cloudflare_record" "docs_cname" {
   name    = "docs"
-  value   = "ghs.google.com"
+  value   = lookup(local.cname_mappings[var.service_cname_redirect], "url", null)
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
 }
 
 resource "cloudflare_record" "mail_cname" {
   name    = "mail"
-  value   = "ghs.google.com"
+  value   = lookup(local.cname_mappings[var.service_cname_redirect], "url", null)
+  type    = "CNAME"
+  zone_id = var.cloudflare_zone_id
+}
+
+resource "cloudflare_record" "drive_cname" {
+  name    = "drive"
+  value   = lookup(local.cname_mappings[var.service_cname_redirect], "url", null)
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
 }
